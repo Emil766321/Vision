@@ -16,3 +16,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::get('/image-recognition/{animal}', function () {
+    return view('image_recognition');
+});
