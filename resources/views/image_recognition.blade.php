@@ -1,17 +1,38 @@
 @extends('layouts.image_recognition_layout')
 
 @section('content')
-<div class="w-full h-screen flex flex-col justify-around">
-    <div class="flex flex-row justify-around h-full">
-        <div class="flex flex-col justify-around">
-            <div class="rounded-lg w-96 h-1/2 shadow-lg">
-                <div class="flex flex-col justify-around h-full">
-                    <h1 class="text-3xl text-Test font-bold text-center p-5">
-                        {{request('animal')}}
-                    </h1>
-                </div>
-            </div>
-        </div>
-    </div>
+
+<div class="classifier">
+    <p>{{request('animal')}}</p>
+
+    <img src="{{asset('storage/images/cat.jpeg');}}" alt="Picture of a cat ">
+
+    <?php
+
+        $img = imagecreatefromjpeg(Storage::path('/public/images/cat.jpeg'));
+
+        $pixels = [];
+        $width = imagesx($img);
+        $height = imagesy($img);
+
+        // for ($y = 0; $y < $height; $y++) {
+        //     $row = [];
+        //     for ($x = 0; $x < $width; $x++) {
+        //         $rgb = imagecolorat($img, $x, $y);
+        //         $color = imagecolorsforindex($img, $rgb);
+        //         $row[] = [$color['red'], $color['green'], $color['blue']];
+        //     }
+        //     $pixels[] = $row;
+        // }
+
+        $model = new OnnxRuntime\Model(Storage::path('/public/onnx-models/bvlcalexnet-3.onnx'));
+
+        //print_r($model->inputs());
+
+        // $result = $model->predict(['inputs' => [$pixels]]);
+
+        // print_r($result['detection_classes']);
+    ?>
 </div>
+
 @endsection
