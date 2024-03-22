@@ -4,34 +4,72 @@
 
 <div class="classifier">
     <p>{{request('animal')}}</p>
-
-    <img src="{{asset('storage/images/cat.jpeg');}}" alt="Picture of a cat ">
+    <img src="{{asset('storage/images/cat_2.jpeg');}}" alt="Picture of a st bernard ">
 
     <?php
+    // get the image trough the path and store it in $img
+    $img = imagecreatefromjpeg(Storage::path('/public/images/cat_2.jpeg'));
 
-        $img = imagecreatefromjpeg(Storage::path('/public/images/cat.jpeg'));
+    // make a pixek array from the image
+    $pixels = [];
+    $width = imagesx($img);
+    $height = imagesy($img);
 
-        $pixels = [];
-        $width = imagesx($img);
-        $height = imagesy($img);
+    for ($y = 0; $y < $height; $y++) {
+        $row = [];
+        for ($x = 0; $x < $width; $x++) {
+            $rgb = imagecolorat($img, $x, $y);
+            $color = imagecolorsforindex($img, $rgb);
+            $row[] = [$color['red'], $color['green'], $color['blue']];
+        }
+        $pixels[] = $row;
+    }
 
-        // for ($y = 0; $y < $height; $y++) {
-        //     $row = [];
-        //     for ($x = 0; $x < $width; $x++) {
-        //         $rgb = imagecolorat($img, $x, $y);
-        //         $color = imagecolorsforindex($img, $rgb);
-        //         $row[] = [$color['red'], $color['green'], $color['blue']];
-        //     }
-        //     $pixels[] = $row;
-        // }
+    // call the onnx model
+    $model = new OnnxRuntime\Model(Storage::path('/public/onnx-models/efficientnet-lite4-11-qdq.onnx'));
 
-        $model = new OnnxRuntime\Model(Storage::path('/public/onnx-models/bvlcalexnet-3.onnx'));
+    // run the onnx model with the pixel array in parameter
+    $response = $model->predict(['images:0' => [$pixels]]);
+    $results = $response["Softmax:0"];
 
-        //print_r($model->inputs());
+    // print_r($results);
 
-        // $result = $model->predict(['inputs' => [$pixels]]);
+    // sort the results to get the 3 most likely
 
-        // print_r($result['detection_classes']);
+    // load the json file with the responses
+    $json_data = file_get_contents(Storage::path('/public/onnx-models/labels_map.json'));
+
+    // convert the json string to a php array
+    $labels = json_decode($json_data, true);
+
+    // check if the array is filled
+    if ($labels === null) {
+        echo "An error occured when we try to decode the answers\n";
+        exit(1);
+    }
+
+    // copy the array so the original one is not changed
+    $sorted_array = $results[0];
+
+    // sort array by descending numbre
+    arsort($sorted_array);
+
+    // get the 3 first index
+    $top_indices = array_slice(array_keys($sorted_array), 0, 3);
+
+    // get trough the 5 top index
+    foreach ($top_indices as $r) {
+        // chek on the label map which picture is it
+        if (array_key_exists(strval($r), $labels)) {
+            // show what the picture is
+            echo "-> " . $labels[strval($r)] . "</br>";
+        } else {
+            echo "Étiquette non trouvée pour l'indice : " . $r . "\n";
+        }
+    }
+
+    // $inputInfo = $model->outputs();
+    // print_r($inputInfo);
     ?>
 </div>
 
