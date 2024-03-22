@@ -4,11 +4,11 @@
 
 <div class="classifier">
     <p>{{request('animal')}}</p>
-    <img src="{{asset('storage/images/cat_2.jpeg');}}" alt="Picture of a st bernard ">
+    <img src="{{asset('storage/images/salamander.jpeg');}}" alt="Picture of a st bernard ">
 
     <?php
     // get the image trough the path and store it in $img
-    $img = imagecreatefromjpeg(Storage::path('/public/images/cat_2.jpeg'));
+    $img = imagecreatefromjpeg(Storage::path('/public/images/salamander.jpeg'));
 
     // make a pixek array from the image
     $pixels = [];
@@ -25,11 +25,21 @@
         $pixels[] = $row;
     }
 
+    // convert the pixel rgb array (0 - 255) to float (-1.0 to 1.0)
+    $float_pixels = [];
+    foreach ($pixels as $row) {
+        $float_row = [];
+        foreach ($row as $pixel) {
+            $float_row[] = [($pixel[0] / 127.5) - 1.0, ($pixel[1] / 127.5)- 1.0, ($pixel[2] / 127.5) - 1.0];
+        }
+        $float_pixels[] = $float_row;
+    }
+
     // call the onnx model
     $model = new OnnxRuntime\Model(Storage::path('/public/onnx-models/efficientnet-lite4-11-qdq.onnx'));
 
     // run the onnx model with the pixel array in parameter
-    $response = $model->predict(['images:0' => [$pixels]]);
+    $response = $model->predict(['images:0' => [$float_pixels]]);
     $results = $response["Softmax:0"];
 
     // print_r($results);
