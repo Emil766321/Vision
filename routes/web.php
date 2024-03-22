@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ImagePrediction;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,6 +18,5 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/image-recognition/{animal}', function () {
-    return view('image_recognition');
-});
+Route::get('/image-recognition/', [ImagePrediction::class, 'classify']);
+Route::post('/image-recognition/', [ImagePrediction::class, 'predict']);
