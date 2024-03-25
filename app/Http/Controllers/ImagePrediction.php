@@ -20,10 +20,7 @@ class ImagePrediction extends Controller
      */
     public function predict()
     {
-        $response = [
-            'text' => "",
-            'class' => []
-        ];
+        $response = [];
 
         $file_extension = request('image')->getClientOriginalExtension();
         $file_path = request('image');
@@ -34,22 +31,22 @@ class ImagePrediction extends Controller
                 $response = $this->predict_jpg($file_path);
 
                 return view('image_classed', [
-                    "response" => $response['text'],
-                    "class" => $response['class']
+                    "response" => $response
                 ]);
 
             case 'zip':
-                //unzip the folder
-                $files = $this->unzip(request('image'));
+                // predict all the images of a zip folder
+                $response = $this->predict_zip($file_path);
+
                 return view('image_classed', [
-                    "response" => $files
+                    "response" => $response,
                 ]);
 
             default:
-                $response['text'] = "You have uploaded a " . $file_extension . " file. Please upload a jpeg or jpg file.";
+                $response[0]['text'] = "You have uploaded a " . $file_extension . " file. Please upload a jpeg or jpg file.";
 
                 return view('image_classed', [
-                    "response" => $response['text']
+                    "response" => $response
                 ]);
         }
     }
@@ -59,10 +56,7 @@ class ImagePrediction extends Controller
      */
     private function predict_jpg($img_path)
     {
-        $response = [
-            'text' => "",
-            'class' => []
-        ];
+        $response = [];
 
         // resize image
         $img = $this->resize_image($img_path, 224, 224, "jpg");
@@ -71,7 +65,50 @@ class ImagePrediction extends Controller
         $pixels = $this->get_pixels($img);
 
         // get the class for the image
-        $response = $this->run_onnx($pixels);
+        $response[0] = $this->run_onnx($pixels);
+
+        return $response;
+    }
+
+    /**
+     * Classify all pictures in a zip folder
+     */
+    private function predict_zip($zip_path)
+    {
+        $response = [];
+
+        $files = $this->unzip($zip_path);
+
+        for ($i = 0; $i < count($files); $i++) {
+            if($i != 0){
+                // resize image
+                $img = $this->resize_image($files[$i]['path'], 224, 224, $files[$i]['type']);
+
+                if($img != ""){
+                    // make a pixel array from the image
+                    $pixels = $this->get_pixels($img);
+
+                    // get the class for the image
+                    $response[$i] = $this->run_onnx($pixels);
+                } else {
+                    $response[$i]['class'] = [];
+                    $response[$i]['text'] = "This image is not supported by the onnx model";
+                }
+            } else {
+                $response[$i]['text'] = '';
+                $response[$i]['class'] = [];
+            }
+        }
+
+        // remove the files & the directory created when we unzipped the folder
+
+        for ($i=0; $i < count($files); $i++) {
+            if($i != 0){
+                unlink($files[$i]['path']);
+            }
+        }
+
+        rmdir($files[0]['path']);
 
         return $response;
     }
@@ -143,7 +180,7 @@ class ImagePrediction extends Controller
         // copy the array so the original one is not changed
         $sorted_array = $results[0];
 
-        // sort array by descending numbre
+        // sort array by descending number
         arsort($sorted_array);
 
         // get the 3 first index
@@ -206,10 +243,27 @@ class ImagePrediction extends Controller
         if ($zip->open($path) === true) {
             for($i = 0; $i < $zip->numFiles; $i++) {
                 $files[$i]['name'] = $zip->getNameIndex($i);
-                $files[$i]['path'] = pathinfo($files[$i]['name']);
-                // $files[$i]['extension'] = $files[$i]['path']->getClientOriginalExtension();
+                $files[$i]['info'] = pathinfo($files[$i]['name']);
             }
+            $zip->extractTo('../public/storage/images/zip');
             $zip->close();
+        }
+
+        for ($i=0; $i < count($files); $i++) {
+            if($i == 0){
+                $files[$i]['path'] = "../public/storage/images/zip/" . $files[$i]['info']['basename'];
+            } else {
+                $files[$i]['path'] = "../public/storage/images/zip/" . $files[$i]['name'];
+                switch($files[$i]['info']['extension']){
+                    case 'jpeg':
+                    case 'jpg':
+                        $files[$i]['type'] = "jpg";
+                        break;
+                    default:
+                        $files[$i]['type'] = $files[$i]['info']['extension'];
+                        break;
+                }
+            }
         }
 
         return $files;
