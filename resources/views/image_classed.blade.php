@@ -7,7 +7,7 @@
         <p>{{$item}}</p>
     @endforeach
 @endif
-<p>{{$response}}</p>
+<p>{{var_dump($response)}}</p>
 </br>
 </br>
 <a class="mt-5 p-1 border-black border-solid border-2 rounded-md" href="/image-recognition">Go back</a>

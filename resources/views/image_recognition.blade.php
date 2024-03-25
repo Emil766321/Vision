@@ -19,7 +19,7 @@
 </div>
 
 <div class="classifier">
-    {{-- <img src="{{asset('storage/images/St_bernard.jpeg');}}" alt="Picture of a st bernard "> --}}
+    {{-- <img src="../../storage/images/test/cat.jpeg" alt="Picture of a st bernard "> --}}
 </div>
 
 @endsection

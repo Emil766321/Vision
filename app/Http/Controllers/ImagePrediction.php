@@ -28,21 +28,29 @@ class ImagePrediction extends Controller
         $file_extension = request('image')->getClientOriginalExtension();
         $file_path = request('image');
 
-        if($file_extension == "jpeg" || $file_extension == "jpg"){
+        switch($file_extension){
+            case 'jpg':
+            case 'jpeg':
+                $response = $this->predict_jpg($file_path);
 
-            $response = $this->predict_jpg($file_path);
+                return view('image_classed', [
+                    "response" => $response['text'],
+                    "class" => $response['class']
+                ]);
 
-            return view('image_classed', [
-                "response" => $response['text'],
-                "class" => $response['class']
-            ]);
+            case 'zip':
+                //unzip the folder
+                $files = $this->unzip(request('image'));
+                return view('image_classed', [
+                    "response" => $files
+                ]);
 
-        } else {
-            $response['text'] = "You have uploaded a " . $file_extension . " file. Please upload a jpeg or jpg file.";
+            default:
+                $response['text'] = "You have uploaded a " . $file_extension . " file. Please upload a jpeg or jpg file.";
 
-            return view('image_classed', [
-                "response" => $response['text']
-            ]);
+                return view('image_classed', [
+                    "response" => $response['text']
+                ]);
         }
     }
 
@@ -185,6 +193,26 @@ class ImagePrediction extends Controller
         }
 
         return $img;
+    }
+
+    /**
+     * Unzip a folder
+     */
+    private function unzip($path)
+    {
+        $files = [];
+
+        $zip = new \ZipArchive;
+        if ($zip->open($path) === true) {
+            for($i = 0; $i < $zip->numFiles; $i++) {
+                $files[$i]['name'] = $zip->getNameIndex($i);
+                $files[$i]['path'] = pathinfo($files[$i]['name']);
+                // $files[$i]['extension'] = $files[$i]['path']->getClientOriginalExtension();
+            }
+            $zip->close();
+        }
+
+        return $files;
     }
 
     /**
