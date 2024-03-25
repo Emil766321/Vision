@@ -12,10 +12,11 @@
 @endfor
 
 @for ($i = 0; $i < count($response); $i++)
-    @if (isset($response[$i]['text']))
+    @if (isset($response[$i]['text']) && $response[$i]['text'] != "")
     <p>Comment for image {{$i}} : {{$response[$i]['text']}}</p>
     @endif
 @endfor
+
 </br>
 </br>
 <a class="mt-5 p-1 border-black border-solid border-2 rounded-md" href="/image-recognition">Go back</a>

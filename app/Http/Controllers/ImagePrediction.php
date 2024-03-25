@@ -79,6 +79,8 @@ class ImagePrediction extends Controller
 
         $files = $this->unzip($zip_path);
 
+        $response[0]['text'] = $files;
+
         for ($i = 0; $i < count($files); $i++) {
             if($i != 0){
                 // resize image
@@ -101,13 +103,11 @@ class ImagePrediction extends Controller
         }
 
         // remove the files & the directory created when we unzipped the folder
-
         for ($i=0; $i < count($files); $i++) {
             if($i != 0){
                 unlink($files[$i]['path']);
             }
         }
-
         rmdir($files[0]['path']);
 
         return $response;
@@ -266,7 +266,58 @@ class ImagePrediction extends Controller
             }
         }
 
-        return $files;
+        // set an array that will contain the files usable
+        $usefull_files = [];
+
+        // set an array with the files that needs to be deleted
+        $useless_files = [];
+
+        // set the index for the usefull_files array
+        $index_usefull_files = 0;
+
+        // set the index for the useless_files array
+        $index_useless_files = 0;
+
+        for ($i=0; $i < count($files); $i++) {
+            //if this is the parent folder, copy it
+            if($i==0){
+                $usefull_files[$index_usefull_files] = $files[$i];
+                $index_usefull_files++;
+            } else {
+                // set the string for the dir to delete
+                $exclude_dir = "__MACOSX/".$files[0]['info']['basename'];
+
+                // check if the file is not from the __MACOSX folder
+                if($files[$i]['info']['dirname'] != $exclude_dir){
+                    // check if the file are only jpg or jpeg
+                    if($files[$i]['info']['extension'] == "jpg" || $files[$i]['info']['extension'] == "jpeg"){
+                        $usefull_files[$index_usefull_files] = $files[$i];
+                        $index_usefull_files++;
+                    } else {
+                        $useless_files[$index_useless_files] = $files[$i];
+                        $index_useless_files++;
+                    }
+                } else {
+                    $useless_files[$index_useless_files] = $files[$i];
+                    $index_useless_files++;
+                }
+            }
+        }
+
+        // remove all the useless files
+        foreach($useless_files as $file){
+            unlink($file['path']);
+        }
+
+        // remove the two useless directories of the mac zipped folder if they exists
+        if(is_dir('../public/storage/images/zip/__MACOSX/'.$usefull_files[0]['info']['basename'])){
+            rmdir('../public/storage/images/zip/__MACOSX/'.$usefull_files[0]['info']['basename']);
+        }
+        if(is_dir('../public/storage/images/zip/__MACOSX')){
+            rmdir('../public/storage/images/zip/__MACOSX');
+        }
+
+        return $usefull_files;
     }
 
     /**
