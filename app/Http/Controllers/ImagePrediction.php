@@ -20,24 +20,60 @@ class ImagePrediction extends Controller
      */
     public function predict()
     {
-        $response_text = "salut";
+        $response = [
+            'text' => "",
+            'class' => []
+        ];
+
+        $file_extension = request('image')->getClientOriginalExtension();
+        $file_path = request('image');
+
+        if($file_extension == "jpeg" || $file_extension == "jpg"){
+
+            $response = $this->predict_jpg($file_path);
+
+            return view('image_classed', [
+                "response" => $response['text'],
+                "class" => $response['class']
+            ]);
+
+        } else {
+            $response['text'] = "You have uploaded a " . $file_extension . " file. Please upload a jpeg or jpg file.";
+
+            return view('image_classed', [
+                "response" => $response['text']
+            ]);
+        }
+    }
+
+    /**
+     * Classify a jpg or jpeg image
+     */
+    private function predict_jpg($img_path)
+    {
+        $response = [
+            'text' => "",
+            'class' => []
+        ];
 
         // resize image
-        $filename = request('image');
-        $default_img = imagecreatefromjpeg($filename); //get the image
-        list($width, $height) = getimagesize(request('image'));
+        $img = $this->resize_image($img_path, 224, 224, "jpg");
 
-        $newwidth = 224;
-        $newheight = 224;
+        // make a pixel array from the image
+        $pixels = $this->get_pixels($img);
 
-        $img = imagecreatetruecolor($newwidth, $newheight);
-        imagecopyresampled($img, $default_img, 0, 0, 0, 0, $newwidth, $newheight, $width, $height);
+        // get the class for the image
+        $response = $this->run_onnx($pixels);
 
-        $this->destroy($default_img);
+        return $response;
+    }
 
-        // imagejpeg($destination, Storage::path('public/images/test.jpeg'), 100);
-
-        // make a pixek array from the image
+    /**
+     * Make an array of pixels from an image
+     */
+    private function get_pixels($img)
+    {
+        // make a pixel array from the image
         $pixels = [];
         $width = imagesx($img);
         $height = imagesy($img);
@@ -62,12 +98,25 @@ class ImagePrediction extends Controller
             $float_pixels[] = $float_row;
         }
 
+        return $float_pixels;
+    }
+
+    /**
+     * Run the onnx model "efficientnet" to classify a pixel array
+     */
+    private function run_onnx($pixel_array)
+    {
+        $response = [
+            'text' => "",
+            'class' => []
+        ];
+
         // get the onnx model
         $model = new \OnnxRuntime\Model(Storage::path('/public/onnx-models/efficientnet-lite4-11-qdq.onnx'));
 
         // run the onnx model with the pixel array in parameter
-        $response = $model->predict(['images:0' => [$float_pixels]]);
-        $results = $response["Softmax:0"];
+        $model_response = $model->predict(['images:0' => [$pixel_array]]);
+        $results = $model_response["Softmax:0"];
 
         // sort the results to get the 3 most likely
 
@@ -79,7 +128,7 @@ class ImagePrediction extends Controller
 
         // check if the array is filled
         if ($labels === null) {
-            $response_text = "An error occured when we try to decode the answers</br>";
+            $response['text'] = "An error occured when we try to decode the answers</br>";
             exit(1);
         }
 
@@ -101,23 +150,41 @@ class ImagePrediction extends Controller
                 // show what the picture is
                 $class[$i] = "-> " . $labels[strval($r)]  ;
             } else {
-                $response_text = "No class found for index : " . $r . "</br>";
+                $response['text'] = "No class found for index : " . $r . "</br>";
             }
             $i++;
         }
 
-        return view('image_classed', [
-            "response" => $response_text,
-            "class" => $class
-        ]);
+        // set the answer array with the 3 classes of the pictures
+        $response['class'] = $class;
+
+        return $response;
     }
 
     /**
-     * Display the specified resource.
+     * Resize an image
      */
-    public function show(string $id)
+    private function resize_image($img_path, int $size_x, int $size_y, string $param)
     {
-        //
+        $img = "";
+        switch($param){
+            case "jpg":
+                $default_img = imagecreatefromjpeg($img_path); //get the image
+                list($width, $height) = getimagesize($img_path);
+
+                $img = imagecreatetruecolor($size_x, $size_y);
+                imagecopyresampled($img, $default_img, 0, 0, 0, 0, $size_x, $size_y, $width, $height);
+
+                $this->destroy($default_img);
+
+                break;
+            case "png":
+                break;
+            default:
+                break;
+        }
+
+        return $img;
     }
 
     /**
