@@ -18,8 +18,6 @@
     </div>
 </div>
 
-<div class="classifier">
-    {{-- <img src="../../storage/images/test/cat.jpeg" alt="Picture of a st bernard "> --}}
-</div>
+{{-- <img src="../../storage/images/test/cat.jpeg" alt="Picture of a st bernard "> --}}
 
 @endsection
