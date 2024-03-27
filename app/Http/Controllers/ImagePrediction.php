@@ -29,6 +29,12 @@ class ImagePrediction extends Controller
     {
         $response = [];
 
+        if(empty(request('image'))){
+            return view('image_recognition', [
+                "error" => "You must upload a file"
+            ]);
+        }
+
         $file_extension = request('image')->getClientOriginalExtension();
         $file_path = request('image');
 

@@ -15,7 +15,7 @@ use App\Http\Controllers\ImagePrediction;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('home');
 });
 
 Route::get('/image-recognition/', [ImagePrediction::class, 'classify']);
