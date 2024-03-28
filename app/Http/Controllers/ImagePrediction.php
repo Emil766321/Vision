@@ -74,27 +74,12 @@ class ImagePrediction extends Controller
         ]);
     }
     /**
-     * show the images of the user
+     * show the images uploaded by the user
      */
     public function show(Request $request)
     {
-        $request->validate([
-            'image' => 'mimes:jpg,jpeg'
-        ]);
+        $images = Classification::get();
 
-        if($request->has('image')){
-            $image = $request->file('image');
-            $extention = $image->getClientOriginalExtension();
-
-            $filename = time().'.'.$extention;
-            $path = 'storage/uploaded_images/';
-
-            $image->move(public_path($path), $filename);
-        }
-
-        Classification::create([
-            'image' => $path.$filename,
-            'user_id' => auth()->user()->id
-        ]);
+        return view('history', compact('images'));
     }
 }

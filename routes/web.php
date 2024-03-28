@@ -19,9 +19,7 @@ Route::get('/', function () {
     return view('home');
 })->name('home');
 
-Route::get('/history', function () {
-    return view('history');
-})->middleware(['auth', 'verified'])->name('history');
+Route::get('/history', [ImagePrediction::class, 'show'])->middleware(['auth', 'verified'])->name('history');
 
 Route::get('/image-recognition/', [ImagePrediction::class, 'classify'])->name('image-recognition');
 Route::post('/image-recognition/', [ImagePrediction::class, 'predict'])->name('image-recognition');
