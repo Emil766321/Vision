@@ -84,6 +84,15 @@ class ClassificationService
             }
         }
 
+        // $this->remove_dire_temp_files($files);
+
+        return $response;
+    }
+
+    /**
+     * Remove unzipped files
+     */
+    public function remove_dire_temp_files(array $files){
         // remove the files & the directory created when we unzipped the folder
         for ($i=0; $i < count($files); $i++) {
             if($i != 0){
@@ -91,8 +100,6 @@ class ClassificationService
             }
         }
         rmdir($files[0]['path']);
-
-        return $response;
     }
 
     /**

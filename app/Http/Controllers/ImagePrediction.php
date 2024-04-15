@@ -54,24 +54,56 @@ class ImagePrediction extends Controller
      */
     public function store(Request $request)
     {
+        $image = $request->file('image');
+
         $request->validate([
-            'image' => 'mimes:jpg,jpeg'
+            'image' => 'mimes:jpg,jpeg,zip'
         ]);
 
-        if($request->has('image')){
-            $image = $request->file('image');
-            $extention = $image->getClientOriginalExtension();
+        if($image->getClientOriginalExtension() == "zip"){
 
-            $filename = time().'.'.$extention;
-            $path = 'storage/uploaded_images/';
+            // Get the folder of the unzipped files
+            $folder_path = "../public/storage/images/zip";
+            // List of name of files inside specified folder
+            $folder = glob($folder_path.'/*');
+            $files = glob($folder[0].'/*');
 
-            $image->move(public_path($path), $filename);
+            $i = 0;
+            foreach($files as $file) {
+                if(is_file($file)){
+                    $extention = pathinfo($file, PATHINFO_EXTENSION);
+                    $filename = time().$i.'.'.$extention;
+                    $path = 'storage/uploaded_images/';
+
+                    copy($file, $path.$filename);
+
+                    Classification::create([
+                        'image' => $path.$filename,
+                        'user_id' => auth()->user()->id
+                    ]);
+
+                    // Delete the given file
+                    unlink($file);
+                }
+                $i += 1;
+            }
+
+            rmdir($folder[0]);
+
+        } else {
+            if($request->has('image')){
+                $extention = $image->getClientOriginalExtension();
+                $filename = time().'.'.$extention;
+                $path = 'storage/uploaded_images/';
+
+                $image->move(public_path($path), $filename);
+            }
+
+            Classification::create([
+                'image' => $path.$filename,
+                'user_id' => auth()->user()->id
+            ]);
         }
-
-        Classification::create([
-            'image' => $path.$filename,
-            'user_id' => auth()->user()->id
-        ]);
     }
     /**
      * show the images uploaded by the user

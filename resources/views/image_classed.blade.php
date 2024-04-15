@@ -27,7 +27,6 @@
                             <p>Comment for image {{$i}} : {{$response[$i]['text']}}</p>
                             @endif
                         @endfor
-
                         <div class="mt-8 flex flex-col items-center justify-center gap-4">
                             <a href="/image-recognition" class="transition-colors shadow-2xl text-xl text-white py-4 px-10 border-black border-solid border-2 rounded-2xl bg-black hover:border-black hover:text-black hover:bg-white">
                                 Go back
