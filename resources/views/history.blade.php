@@ -19,18 +19,33 @@
     </section>
     <div class="w-100 flex justify-around my-14">
         <div class="w-2/4 flex flex-col">
-            @foreach ($images as $item)
-                <div class="w-100 min-h-96 my-4 rounded-lg shadow-md">
-                    <div class="h-full flex flex-row justify-around m-4">
-                        <div class="h-full flex flex-col justify-around">
-                            <img src="{{ asset($item->image) }}" alt="Img" class="h-[200px]"/>
-                        </div>
-                        <div class="h-full flex flex-col justify-around">
-                            <p>Uploaded : {{$item->created_at}}</p>
-                        </div>
+            @if($images->isEmpty())
+            <div class="w-100 min-h-96 my-4">
+                <div class="h-full flex flex-col m-4">
+                    <div class="w-full flex flex-row justify-around my-4">
+                        <p>You have not uploaded images yet.</p>
+                    </div>
+                    <div class="my-4 flex flex-col items-center justify-center gap-4">
+                        <a href="/image-recognition" class="transition-colors shadow-2xl text-xl text-white py-4 px-10 border-black border-solid border-2 rounded-2xl bg-black hover:border-black hover:text-black hover:bg-white">
+                            Upload now !
+                        </a>
                     </div>
                 </div>
-            @endforeach
+            </div>
+            @else
+                @foreach ($images as $item)
+                    <div class="w-100 min-h-96 my-4 rounded-lg shadow-md">
+                        <div class="h-full flex flex-row justify-around m-4">
+                            <div class="h-full flex flex-col justify-around">
+                                <img src="{{ asset($item->image) }}" alt="Img" class="h-[200px]"/>
+                            </div>
+                            <div class="h-full flex flex-col justify-around">
+                                <p>Uploaded : {{$item->created_at}}</p>
+                            </div>
+                        </div>
+                    </div>
+                @endforeach
+            @endif
         </div>
     </div>
 </x-app-layout>

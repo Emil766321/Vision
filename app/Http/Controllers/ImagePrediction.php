@@ -110,7 +110,8 @@ class ImagePrediction extends Controller
      */
     public function show(Request $request)
     {
-        $images = Classification::get();
+        $images = Classification::get()
+            ->where('user_id', '=', auth()->user()->id);
 
         return view('history', compact('images'));
     }
