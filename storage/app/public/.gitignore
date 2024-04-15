@@ -1,2 +1,4 @@
 *
+!uploaded_images/**
+!images/**
 !.gitignore
