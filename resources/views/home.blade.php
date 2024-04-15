@@ -7,7 +7,9 @@
     <div class="relative pt-24 lg:pt-28">
         <div class="mx-auto px-6 max-w-7xl md:px-12">
             <div class="text-center sm:mx-auto sm:w-10/12 lg:mr-auto lg:mt-0 lg:w-4/5">
-                <h1 class="mt-8 text-wrap text-4xl md:text-5xl font-semibold text-gray-950 xl:text-5xl xl:[line-height:1.125]">AI-Powered <br class="hidden sm:block">Image Classification Hub</h1>
+                <h1 class="mt-8 text-wrap text-4xl md:text-5xl font-semibold text-gray-950 xl:text-5xl xl:[line-height:1.125]">
+                    AI-Powered <br class="hidden sm:block">Image Classification Hub
+                </h1>
                 <p class="text-wrap mx-auto mt-8 max-w-2xl text-lg text-gray-700 hidden sm:block">
                     Organize Your Visual Content with Precision.
                 </p>
