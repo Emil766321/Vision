@@ -19,9 +19,9 @@ Route::get('/', function () {
     return view('home');
 })->name('home');
 
-Route::get('/history', [ImagePrediction::class, 'show'])->middleware(['auth', 'verified'])->name('history');
+Route::get('/history', [ImagePrediction::class, 'show'])->middleware('logged')->name('history');
 
-Route::get('/image-recognition/', [ImagePrediction::class, 'classify'])->name('image-recognition');
+Route::get('/image-recognition/', [ImagePrediction::class, 'classify'])->middleware('logged')->name('image-recognition');
 Route::post('/image-recognition/', [ImagePrediction::class, 'predict'])->name('image-recognition');
 
 Route::get('/dashboard', function () {
