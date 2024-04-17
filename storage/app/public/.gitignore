@@ -1,5 +1,5 @@
-images/*
-uploaded_images/*
+*
+
 !uploaded_images/README.md
 !onnx-models/*
 !images/zip/
