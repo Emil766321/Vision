@@ -102,8 +102,8 @@ Visit http://localhost:8000 in your browser to access the Vision application.
 
 ## Dependencies
 
-[PHP](https://www.php.net/downloads.php)
-[Laravel](https://laravel.com/)
-[ONNXRuntime for PHP](https://github.com/ankane/onnxruntime-php)
-[Composer](https://getcomposer.org/)
-[Node.js](https://nodejs.org/en/download)
+- [PHP](https://www.php.net/downloads.php)
+- [Laravel](https://laravel.com/)
+- [ONNXRuntime for PHP](https://github.com/ankane/onnxruntime-php)
+- [Composer](https://getcomposer.org/)
+- [Node.js](https://nodejs.org/en/download)
