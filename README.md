@@ -12,7 +12,7 @@ Before getting started, make sure you have [PHP](https://www.php.net/downloads.p
 
 If all this stuff is installed, you can clone this repository to your local machine:
 ```
-git clone https://github.com/Emil766321/image_recognition
+git clone https://github.com/Emil766321/Vision
 ```
 
 # Configure PHP correctly
