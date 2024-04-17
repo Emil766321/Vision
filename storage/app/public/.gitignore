@@ -1,2 +1,5 @@
-
+images/*
+uploaded_images/*
+!onnx-models/*
+!images/zip/
 !.gitignore
