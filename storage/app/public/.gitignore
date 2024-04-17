@@ -1,4 +1,5 @@
 *
-!uploaded_images/**
-!images/**
+!/uploaded_images/** */
+!/images/** */
+!/onnx-models/** */
 !.gitignore
