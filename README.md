@@ -1,4 +1,4 @@
-### Vision
+# Vision
 
 Visualize your world
 
@@ -8,14 +8,14 @@ Vision is a Laravel web application that utilizes an ONNX model to classify imag
 ## Installation
 Before getting started, make sure you have [PHP](https://www.php.net/downloads.php), [Composer](https://getcomposer.org/) and [Node.js](https://nodejs.org/en/download) installed on your machine.
 
-# Get the repo
+### Get the repo
 
 If all this stuff is installed, you can clone this repository to your local machine:
 ```
 git clone https://github.com/Emil766321/Vision
 ```
 
-# Configure PHP correctly
+### Configure PHP correctly
 
 This app use a lot of memory, and need php modules to work properly. First, you need to locate the `php.ini` file. You can locate this file with the following command:
 ```
@@ -54,7 +54,7 @@ extension=gd
 
 >Please note that GD can already been installed on the default version of php, so I recomand to run the app first, and if there is an error, try to install GD
 
-# Configure Laravel
+### Configure Laravel
 
 For this, you need to be in the `vision` folder. You can navigate trough it with the following command:
 ```
