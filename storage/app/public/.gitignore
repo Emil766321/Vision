@@ -1,5 +1,0 @@
-*
-!/uploaded_images/** */
-!/images/** */
-!/onnx-models/** */
-!.gitignore
