@@ -8,7 +8,7 @@
         </p>
     </x-app-title>
     <div class="w-100 flex justify-around my-14">
-        <div class="w-2/4 flex flex-col">
+        <div class="w-3/4 flex flex-col lg:w-2/4">
             @if($images->isEmpty())
             <div class="w-100 min-h-96 my-4">
                 <div class="h-full flex flex-col m-4">
@@ -24,10 +24,10 @@
             </div>
             @else
                 @foreach ($images as $item)
-                    <div class="w-100 min-h-96 my-4 rounded-lg shadow-md">
-                        <div class="h-full flex flex-row justify-around m-4">
+                    <div class="w-full min-h-96 my-4 rounded-lg shadow-md lg:w-100">
+                        <div class="h-full flex flex-col justify-around m-4 lg:flex-row">
                             <div class="h-full flex flex-col justify-around">
-                                <img src="{{ asset($item->image) }}" alt="Img" class="h-[200px]"/>
+                                <img src="{{ asset($item->image) }}" alt="Img" class="h-m-[200px]"/>
                             </div>
                             <div class="h-full flex flex-col justify-around">
                                 <p>Uploaded : {{$item->created_at}}</p>

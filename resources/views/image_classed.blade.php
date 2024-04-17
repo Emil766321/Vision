@@ -5,7 +5,7 @@
             Upload a jpg, a jpeg or a zip file with multiple jpg and jpeg and observe the magic happens.
         </p>
         <div class="mt-5 flex flex-col items-center justify-center gap-4">
-            <div class="text-left shadow-lg px-5 py-20 rounded-lg mt-28 w-[50%]">
+            <div class="text-left shadow-lg px-5 py-20 rounded-lg mt-28 w-full lg:w-[50%]">
                 @for ($i = 0; $i < count($response); $i++)
                     @if (isset($response[$i]['class']))
                         @foreach ($response[$i]['class'] as $item)

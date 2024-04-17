@@ -1,5 +1,5 @@
 ## About this folder
 
-This folder is user to save the images uploaded by the user so the history can work properly. 
+This folder is used to show the uploaded images by the users
 
-Please don't remove it!
+Please do not remove it!

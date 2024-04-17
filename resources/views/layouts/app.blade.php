@@ -89,9 +89,17 @@
                 <!-- Responsive Navigation Menu -->
                 <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden">
                     <div class="pt-2 pb-3 space-y-1">
-                        <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                            {{ __('Dashboard') }}
+                        <x-responsive-nav-link :href="route('home')" :active="request()->routeIs('home')">
+                            {{ __('Home') }}
                         </x-responsive-nav-link>
+                        <x-responsive-nav-link :href="route('image-recognition')" :active="request()->routeIs('image-recognition')">
+                            {{ __('Classify Images') }}
+                        </x-responsive-nav-link>
+                        @auth
+                        <x-responsive-nav-link :href="route('history')" :active="request()->routeIs('history')">
+                            {{ __('History') }}
+                        </x-responsive-nav-link>
+                        @endauth
                     </div>
 
                     @auth
@@ -129,7 +137,7 @@
         {{ $slot }}
 
         </main>
-        <footer class="rounded-xl border">
+        <footer class="lg:rounded-xl border">
             <div class="max-w-6xl mx-auto px-6 py-16 text-gray-600 2xl:px-0 justify-around flex">
                 <span class="text-gray-600">&copy; Emilien Charpié 2024 - Pré-TPI</span>
             </div>

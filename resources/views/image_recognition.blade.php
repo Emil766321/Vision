@@ -5,7 +5,7 @@
             Upload a jpg, a jpeg or a zip file with multiple jpg and jpeg and observe the magic happens.
         </p>
         <div class="mt-8 flex flex-col items-center justify-center gap-4">
-            <div class="shadow-lg px-5 py-20 rounded-lg mt-28 w-[50%]">
+            <div class="shadow-lg px-5 py-20 rounded-lg mt-28 w-full lg:w-[50%]">
                 @if(isset($error))
                     <div class="m-1 mb-16 border-red-100 border-solid border-2 bg-red-100 text-red-500 rounded-md py-1">
                         {{$error}}
