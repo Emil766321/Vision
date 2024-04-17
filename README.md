@@ -86,6 +86,11 @@ Run database migrations:
 php artisan migrate
 ````
 
+Then, link the storage, so you will have the neccessary ressources to run the app:
+```
+php artisan storage:link
+```
+
 Start the Laravel development server:
 ```
 php artisan serve
