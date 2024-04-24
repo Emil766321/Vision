@@ -22,7 +22,7 @@ jobs:
           cd Vision
       - name: Build app
         run:
-          composer install --no-dev --optimize-autoloader
+          composer -v
           &&
           npm install
           &&
