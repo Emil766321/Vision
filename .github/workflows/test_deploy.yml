@@ -18,11 +18,10 @@ jobs:
       - name: Clone repo
         run: 
           git clone https://github.com/Emil766321/Vision
-          &&
+      - name: Open repository
+        run:
           cd Vision
       - name: Build app
         run:
           ls
-          &&
-          composer install
           
