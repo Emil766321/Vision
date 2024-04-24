@@ -11,5 +11,5 @@ jobs:
 
     runs-on: ubuntu-latest
     steps:
-      - name: Install npm dependencies
-        run: ssh bob_laraclass@blue.section-inf.ch -p 1322
+      - name: install curl
+        run: sudo apt install curl
