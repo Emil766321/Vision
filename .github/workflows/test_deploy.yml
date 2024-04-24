@@ -21,6 +21,8 @@ jobs:
       - name: Open repository
         run:
           cd Vision
+          && 
+          composer install
       - name: Build app
         run:
           ls
