@@ -18,4 +18,5 @@ jobs:
       - name: Clone repo
         run: 
           git clone https://github.com/Emil766321/Vision
-          cd Vision
+          && 
+          ls Vision
