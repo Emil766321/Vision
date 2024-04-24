@@ -20,3 +20,5 @@ jobs:
           git clone https://github.com/Emil766321/Vision
           && 
           ls Vision
+          &&
+          pwd
