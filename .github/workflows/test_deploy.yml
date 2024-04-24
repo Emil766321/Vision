@@ -16,4 +16,19 @@ jobs:
         run: 
           sudo apt install ssh curl php php-curl mysql-server composer npm
       - name: Clone repo
-        run: ls
+        run: 
+          git clone https://github.com/Emil766321/Vision
+          &&
+          cd Vision
+      - name: Build app
+        run:
+          composer install --no-dev --optimize-autoloader
+          &&
+          npm install
+          &&
+          cp .env.example .env
+          &&
+          sed -i "/^DB_DATABASE=/s/.*/DB_DATABASE=${{ secrets.DB_NAME }}/" .env
+          &&
+          cat .env
+          
