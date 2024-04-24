@@ -14,5 +14,4 @@ jobs:
     steps:
       - name: Install dependencies
         run: 
-          sudo apt install ssh curl php php-curl mysql 
-          php --ini
+          sudo apt install ssh curl php php-curl mysql
