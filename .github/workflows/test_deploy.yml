@@ -15,4 +15,4 @@ jobs:
       - name: Install dependencies
         run: 
           sudo apt install ssh curl php php-curl mysql-server composer npm
-          
+          ll
