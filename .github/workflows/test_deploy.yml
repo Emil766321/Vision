@@ -9,7 +9,7 @@ on:
 jobs:
   build:
 
-    runs-on: ubuntu-latest
+    runs-on: php-latest
     steps:
-      - name: install curl
+      - name: Install curl
         run: sudo apt install curl
