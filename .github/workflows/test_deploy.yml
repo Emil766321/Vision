@@ -25,3 +25,25 @@ jobs:
           composer update
           && 
           composer install --no-dev --optimize-autoloader
+          &&
+          npm install
+          &&
+          cp .env.example .env
+          &&
+          sed -i "/^APP_ENV=/s/.*/APP_ENV=production/" .env
+          &&
+          sed -i "/^APP_DEBUG=/s/.*/APP_DEBUG=false/" .env
+          &&
+          sed -i "/^APP_URL=/s/.*/APP_URL=https://laraclass.blue.section-inf.ch/" .env
+          &&
+          sed -i "/^DB_HOST=/s/.*/DB_HOST=127.0.0.1/" .env
+          &&
+          sed -i "/^DB_PORT=/s/.*/DB_PORT=3306/" .env
+          &&
+          sed -i "/^DB_DATABASE=/s/.*/DB_DATABASE=${{ secrets.DB_NAME }}/" .env
+          &&
+          sed -i "/^DB_USERNAME=/s/.*/DB_USERNAME=${{ secrets.DB_USERNAME_TEST }}/" .env
+          &&
+          sed -i "/^DB_PASSWORD=/s/.*/DB_PASSWORD=/" .env
+          &&
+          cat .env
