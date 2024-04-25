@@ -43,12 +43,9 @@ jobs:
           npm run build
           &&
           php artisan storage:link
-      - name: Setup DB
+      - name: Enter DB
         run:
           mysql -u ${{ secrets.DB_USERNAME_TEST }} -p
-          &&
-          CREATE DATABASE ${{ secrets.DB_NAME }};
-          &&
-          exit;
-          &&
-          php artisan migrate --force
+      - name: Create DB
+        run:
+          CREATE DATABASE ${{ secrets.DB_NAME }}
