@@ -32,16 +32,4 @@ jobs:
           &&
           sed 's/APP_ENV.*/APP_ENV=production/g' .env
           &&
-          sed 's/APP_DEBUG.*/APP_DEBUG=false/g' .env
-          &&
-          sed 's/DB_HOST.*/DB_HOST=127.0.0.1/g' .env
-          &&
-          sed 's/DB_PORT.*/DB_PORT=3306/g' .env
-          &&
-          sed 's/DB_DATABASE.*/DB_DATABASE=${{ secrets.DB_NAME }}/g' .env
-          &&
-          sed 's/DB_USERNAME.*/DB_USERNAME=${{ secrets.DB_USERNAME_TEST }}/g' .env
-          &&
-          sed 's/DB_PASSWORD.*/DB_PASSWORD=/g' .env
-          &&
-          cat .env.example
+          cat .env
