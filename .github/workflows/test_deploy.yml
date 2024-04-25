@@ -30,4 +30,6 @@ jobs:
           &&
           cp .env.example .env
           &&
+          sed -i "/^APP_ENV=/s/.*/APP_ENV=production/" .env
+          &&
           cat .env
