@@ -38,8 +38,6 @@ jobs:
           &&
           sed -i "/^DB_DATABASE=/s/.*/DB_DATABASE=${{ secrets.DB_NAME }}/" .env
           &&
-          sed -i "/^DB_USERNAME=/s/.*/DB_USERNAME=${{ secrets.DB_USERNAME_TEST}}/" .env
-          &&
           npm install
           &&
           npm run build
