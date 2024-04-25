@@ -17,7 +17,7 @@ jobs:
           sudo apt install ssh curl php php-curl composer npm
       - name: Install mysql
         run: 
-          sudo apt install mysql-server
+          sudo apt reinstall mysql-server
       - name: Clone repo
         run: 
           git clone https://github.com/Emil766321/Vision
