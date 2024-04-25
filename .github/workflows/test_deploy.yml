@@ -47,4 +47,6 @@ jobs:
           &&
           php artisan storage:link
           &&
-          mysql -u root -e "USE mysql; SELECT * FROM user;"
+          sudo service mysql start
+          &&
+          mysql -h 127.0.0.1 -u root -e "USE mysql; SELECT * FROM user;"
