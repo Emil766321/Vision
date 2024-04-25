@@ -44,4 +44,4 @@ jobs:
           &&
           sed 's/DB_PASSWORD.*/DB_PASSWORD=/g' .env
           &&
-          cat .env
+          cat .env.example
