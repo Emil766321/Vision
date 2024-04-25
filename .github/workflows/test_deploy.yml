@@ -32,6 +32,6 @@ jobs:
           &&
           sed -i "/^APP_ENV=/s/.*/APP_ENV=production/" .env
           &&
-          sed -i "/^DB_NAME=/s/.*/DB_NAME=${{ secrets.DB_NAME }}/" .env
+          sed -i "/^DB_DATABASE=/s/.*/DB_DATABASE=${{ secrets.DB_NAME }}/" .env
           &&
           cat .env
