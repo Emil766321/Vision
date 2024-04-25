@@ -47,4 +47,4 @@ jobs:
           &&
           php artisan storage:link
           &&
-          cat .env
+          php artisan migrate --force
