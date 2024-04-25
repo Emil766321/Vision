@@ -14,7 +14,10 @@ jobs:
     steps:
       - name: Install dependencies
         run: 
-          sudo apt install ssh curl php php-curl mysql-server composer npm
+          sudo apt install ssh curl php php-curl composer npm
+      - name: Install mysql
+        run: 
+          sudo apt install mysql-server
       - name: Clone repo
         run: 
           git clone https://github.com/Emil766321/Vision
@@ -43,9 +46,3 @@ jobs:
           npm run build
           &&
           php artisan storage:link
-      - name: Enter DB
-        run:
-          mysql -u ${{ secrets.DB_USERNAME_TEST }} -p
-      - name: Create DB
-        run:
-          CREATE DATABASE ${{ secrets.DB_NAME }}
