@@ -32,6 +32,12 @@ jobs:
           &&
           sed -i "/^APP_ENV=/s/.*/APP_ENV=production/" .env
           &&
+          sed -i "/^APP_DEBUG=/s/.*/APP_DEBUG=false/" .env
+          &&
+          sed -i "/^APP_URL=/s/.*/APP_URL=127.0.0.1/" .env
+          &&
           sed -i "/^DB_DATABASE=/s/.*/DB_DATABASE=${{ secrets.DB_NAME }}/" .env
+          &&
+          sed -i "/^DB_USERNAME=/s/.*/DB_USERNAME=${{ secrets.DB_USERNAME_TEST}}/" .env
           &&
           cat .env
